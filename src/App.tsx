@@ -4,6 +4,9 @@ import UserSelector from "./components/UserSelector";
 import PokemonList from "./components/Pokedex";
 import UserTeam from "./components/WelcomePage";
 import "./assets/fonts.css";
+import { useAppDispatch } from "./hooks/UseAppDispatch";
+import { useAppSelector } from "./hooks/UseAppSelector";
+import { addCapturedPokemon, capturedPokemonsAndUser, removeCapturedPokemon } from "./store/slices/pokemon-slice";
 
 const App: React.FC = () => {
   const [users, setUsers] = useState<User[]>([
@@ -12,6 +15,8 @@ const App: React.FC = () => {
   ]);
   const [currentUserIndex, setCurrentUserIndex] = useState<number>(0);
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const dispatch = useAppDispatch()
+  const capturedPokemons = useAppSelector((state) => state.pokemon.capturedPokemonIds)
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=10") //librairie de base intégrée à JS. Autre axios
@@ -21,7 +26,8 @@ const App: React.FC = () => {
           const id = pokemon.url.split("/").filter(Boolean).pop();
           return {
             ...pokemon,
-            imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+            imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+
           };
         });
         setPokemonList(pokemonWithImages);
@@ -29,10 +35,18 @@ const App: React.FC = () => {
   }, []); //Mettre un catch pour gérer les erreurs. Mettre le [] parce que sinon le useEffect tourne en boucle
 
 
-  const addToTeam = (pokemon: Pokemon) => {
-    const newUsers = [...users];
-    newUsers[currentUserIndex].team.push(pokemon);
-    setUsers(newUsers);
+  const addToTeam = (pokemonId: number) => {
+    console.log(pokemonId)
+    let alreadyIncludedPokemons: number[] = []
+    capturedPokemons.forEach((pkmn) => {
+      if (currentUserIndex === pkmn.userId) {
+        alreadyIncludedPokemons.push(pkmn.pokemonId)
+      }
+    })
+    dispatch(alreadyIncludedPokemons.includes(pokemonId)
+      ? removeCapturedPokemon({ userId: currentUserIndex, pokemonId: pokemonId } as capturedPokemonsAndUser)
+      : addCapturedPokemon({ userId: currentUserIndex, pokemonId: pokemonId } as capturedPokemonsAndUser))
+
   };
 
   return (
