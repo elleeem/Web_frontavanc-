@@ -13,7 +13,7 @@ import {
 } from "./store/slices/pokemon-slice";
 
 const App: React.FC = () => {
-    const [users, setUsers] = useState<User[]>([
+  const [users, setUsers] = useState<User[]>([
     { name: "Utilisateur 1", team: [] }, //Tableau des utilisateurs avec chacun une team vide
     { name: "Utilisateur 2", team: [] },
   ]);

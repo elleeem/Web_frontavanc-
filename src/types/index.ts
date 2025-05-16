@@ -48,4 +48,4 @@ export type PokemonResponse = IPokemonData[];
 export interface User {
     name: string;
     team: IPokemonData[];
-  }
+}
