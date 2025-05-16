@@ -1,10 +1,10 @@
 import React from "react";
-import { Pokemon } from "../types";
+import { IPokemonData } from "../types";
 import "../App.css";
 
 interface Props {
     userName: string;
-    team: Pokemon[];
+    team: IPokemonData[];
 }
 
 const WelcomePage: React.FC<Props> = ({ userName, team }) => {
@@ -16,9 +16,14 @@ const WelcomePage: React.FC<Props> = ({ userName, team }) => {
             ) : (
                 <ul style={{ listStyle: "none", padding: 0 }}>
                     {team.map((pokemon) => (
-                        <li key={pokemon.name} style={{ marginBottom: "1rem" }}>
-                            <img src={pokemon.imageUrl} alt={pokemon.name} width="72" height="72" />
-                            <span style={{ marginLeft: "1rem" }}>{pokemon.name}</span>
+                        <li key={pokemon.name.fr} style={{ marginBottom: "1rem" }}>
+                            <img
+                                src={pokemon.sprites.regular}
+                                alt={pokemon.name.fr}
+                                width="72"
+                                height="72"
+                            />
+                            <span style={{ marginLeft: "1rem" }}>{pokemon.name.fr}</span>
                         </li>
                     ))}
                 </ul>

@@ -1,19 +1,23 @@
 import React from "react";
-import { Pokemon } from "../types";
+import { IPokemonData } from "../types";
 
 interface Props {
-    pokemonList: Pokemon[];
+    pokemonList: IPokemonData[];
     onSelect: (pokemon: number) => void;
 }
 
 const Pokedex: React.FC<Props> = ({ pokemonList, onSelect }) => {
-
     return (
         <ul style={{ listStyle: "none", padding: 0 }}>
             {pokemonList.map((pokemon) => (
-                <li key={pokemon.name} style={{ marginBottom: "1rem" }}>
-                    <img src={pokemon.imageUrl} alt={pokemon.name} width="72" height="72" />
-                    <span style={{ margin: "0 1rem" }}>{pokemon.name}</span>
+                <li key={pokemon.name.fr} style={{ marginBottom: "1rem" }}>
+                    <img
+                        src={pokemon.sprites.regular}
+                        alt={pokemon.name.fr}
+                        width="72"
+                        height="72"
+                    />
+                    <span style={{ margin: "0 1rem" }}>{pokemon.name.fr}</span>
                     <button onClick={() => onSelect(pokemon.pokedex_id)}>Ajouter</button>
                 </li>
             ))}
